@@ -10,6 +10,7 @@ parses multliallelic sites to their own line
 ex input VCF field:  T   A/AC    0/2:34,0,11:21:99:0,0,1291
    output:  T   A   0:34:0
             T   AC  1:34:11
+for missing genotypes output "NA:0:0" to distinguish missing from hom. ref
 '''
 
 OUT=open(output, 'w')
@@ -18,11 +19,15 @@ v=open(vcf)
 def parse_geno(vcf_field, alt_num=1):
     line=vcf_field.split(":")
     geno=line[0]
-    allele_count=geno.count(str(alt_num))
-    ref_reads=line[1].split(',')[0]
-    alt_reads=line[1].split(',')[alt_num]
-    format="%s:%s:%s" % (allele_count, ref_reads, alt_reads)
-    return format
+    if geno == "./.":
+        format="NA:0:0"
+        return format
+    else:
+        allele_count=geno.count(str(alt_num))
+        ref_reads=line[1].split(',')[0]
+        alt_reads=line[1].split(',')[alt_num]
+        format="%s:%s:%s" % (allele_count, ref_reads, alt_reads)
+        return format
 
 for v_line in v.readlines():
 # find and write sample file names to output file
