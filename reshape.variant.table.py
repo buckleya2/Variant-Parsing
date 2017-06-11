@@ -17,6 +17,13 @@ DF['IDEN']=DF.CHR.map(str) + "-" + DF.POS.map(str) + "-" + DF.REF.map(str) + "_"
 LONG=pd.melt(DF.iloc[:,5:], id_vars='IDEN', var_name="ID", value_name="GENO")
 
 # remove non-variant sites
-LONG=LONG[LONG.GENO.map(lambda x : str(x).split(":")[0]) != "0"]
+LONG=LONG[LONG.GENO.map(lambda x : str(x).split(":")[0]) in "12"]
+
+LONG['CHR']=LONG.IDEN.apply(lambda x : str(x).split("_")[0])
+LONG['POS']=LONG.IDEN.apply(lambda x : str(x).split("_")[1])
+LONG['REF']=LONG.IDEN.apply(lambda x : str(x).split("_")[2])
+LONG['ALT']=LONG.IDEN.apply(lambda x : str(x).split("_")[3])
+
+LONG.drop('IDEN', axis=1, inplace=True)
 
 LONG.to_csv(output, index=False, sep='\t')
