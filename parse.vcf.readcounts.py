@@ -29,7 +29,7 @@ def parse_geno(vcf_field, alt_num=1):
         format="%s:%s:%s" % (allele_count, ref_reads, alt_reads)
         return format
 
-for v_line in v.readlines():
+for v_line in v:
 # find and write sample file names to output file
     if "#CHROM" in v_line:
         sample_name=v_line.strip().split("\t")[9:]
