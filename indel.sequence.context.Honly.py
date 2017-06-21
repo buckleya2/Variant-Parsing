@@ -45,14 +45,17 @@ grch=Fasta('/cellar/users/abuckley/ref/hs37d5.fa')
 #use pyfaidx to pull out sequence +/- 10 bp from indel start position
 #look for homopolymers in flanking sequence
 coord= open(infile)
-for coord_line in coord.readlines():
-    parsed=coord_line.strip().split("\t")
-    chr=str(parsed[0])
-    pos=int(parsed[1])
-    ref=parsed[2]
-    alt=parsed[3]
-    genome=grch[chr][pos-11:pos+10].seq
-    GC=get_GC(genome)
-    out=check_hp(genome)
-    format="%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (chr,pos,ref,alt,out['START'],out['END'],GC,genome )
-    OUT.write(format)
+with open(infile) as coord:
+	for coord_line in coord:
+	    if "POS" in coord_line:
+		continue
+	    parsed=coord_line.strip().split("\t")
+    	    chr=str(parsed[0])
+    	    pos=int(parsed[1])
+    	    ref=parsed[2]
+    	    alt=parsed[3]
+    	    genome=grch[chr][pos-11:pos+10].seq
+    	    GC=get_GC(genome)
+    	    out=check_hp(genome)
+    	    format="%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (chr,pos,ref,alt,out['START'],out['END'],GC,genome )
+    	    OUT.write(format)
