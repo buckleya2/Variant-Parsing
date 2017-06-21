@@ -54,10 +54,13 @@ def get_GC(x):
 #create fasta object 
 grch=Fasta('/cellar/users/abuckley/ref/hs37d5.fa')
 
+
+# write header to file
+OUT.write('CHR\tPOS\tREF\tALT\tSTART\tEND\tBASE\tCALL\tGC\tSEQUENCE\n')
+
 #read theough input file line by line
 #use pyfaidx to pull out sequence +/- 10 bp from indel start position
 #look for homopolymers in flanking sequence
-coord= open(infile)
 with open(infile) as coord:
 	for coord_line in coord:
 	    if "POS" in coord_line:
