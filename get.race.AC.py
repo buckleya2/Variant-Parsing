@@ -11,7 +11,7 @@ here getting AC for AFR (african), NFE( non-Finniah European), and EAS (East Asi
 '''
 
 # make a dictionary that maps each TCGA ID to the PCA predicted ancestry
-ethnicity_file="/cellar/users/abuckley/ref/TCGA.pred.ancestry"
+ethnicity_file="/cellar/users/abuckley/ref/TCGA.pred.ancestry.dedup"
 
 mapping=defaultdict(lambda : "NA")
 with open(ethnicity_file) as E:
@@ -39,7 +39,7 @@ with gzip.open(vcf) as v:
 # map sample names to ethnicity
             eth_array=np.array([mapping[i] for i in sample_name])
 # create np masks for each ethnicity
-            AFR=np.where(eth_array == "BLACK OR AFRICAN AMERICAN")
+            AFR=np.where(eth_array == "BLACK")
             NFE=np.where(eth_array == "WHITE")
             EAS=np.where(eth_array == "ASIAN")
 # write a header line
